@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workoutTracker.WebAPI", "workoutTracker.WebAPI.csproj", "{72DC713A-6C12-42AC-B753-728D5E263002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workoutTracker.Domain", "..\workoutTracker.Domain\workoutTracker.Domain.csproj", "{17FC634A-8927-45AE-B63A-8D2A4F02974E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72DC713A-6C12-42AC-B753-728D5E263002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72DC713A-6C12-42AC-B753-728D5E263002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72DC713A-6C12-42AC-B753-728D5E263002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72DC713A-6C12-42AC-B753-728D5E263002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17FC634A-8927-45AE-B63A-8D2A4F02974E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FC634A-8927-45AE-B63A-8D2A4F02974E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FC634A-8927-45AE-B63A-8D2A4F02974E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FC634A-8927-45AE-B63A-8D2A4F02974E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DEEEA62-E49A-4D5E-8894-405B573EF2B8}
+	EndGlobalSection
+EndGlobal
