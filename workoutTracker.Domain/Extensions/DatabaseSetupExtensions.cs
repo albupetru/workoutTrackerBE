@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using workoutTracker.Domain.DatabaseContext;
 
 namespace workoutTracker.Domain.Extensions
@@ -17,6 +18,8 @@ namespace workoutTracker.Domain.Extensions
                 .AddDbContext<ApplicationDbContext>((provider, options) =>
                 {
                     options.UseSqlite(connectionString);
+                    options.EnableSensitiveDataLogging();
+                    options.LogTo(Console.WriteLine, LogLevel.Error);
                 });
         }
     }
