@@ -21,6 +21,8 @@ namespace workoutTracker.Domain.Repositories.Implementation
             return;
         }
 
+        // TODO: token refresh
+
         public async Task<string> Login(GoogleAccessTokenResponse googleAccessTokenResponse, string secret)
         {
             var googleJwtToken = new JwtSecurityToken(jwtEncodedString: googleAccessTokenResponse.IdToken);
@@ -58,7 +60,7 @@ namespace workoutTracker.Domain.Repositories.Implementation
             {
                 new( "oid", user.Id.ToString() ),
                 new( ClaimTypes.Name, user.Name ),
-                new( "emal", user.Email ),
+                new( "email", user.Email ),
             };
 
             var newGeneratedToken = new JwtSecurityToken
