@@ -12,7 +12,7 @@ namespace workoutTracker.Domain.ViewModels
     {
         // jwt token string
         [Required]
-        [JsonPropertyName("Code")]
+        [JsonPropertyName("code")]
         public string Code { get; set; }
     }
 }

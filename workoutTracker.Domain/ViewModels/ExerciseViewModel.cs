@@ -12,5 +12,6 @@ namespace workoutTracker.Domain.ViewModels
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
+        public List<TagViewModel> Tags { get; set; }
     }
 }

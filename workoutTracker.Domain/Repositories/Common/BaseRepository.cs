@@ -38,6 +38,69 @@ namespace workoutTracker.Domain.Repositories.Common
                .ToListAsync() ?? new List<T>();
         }
 
+        public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<Expression<Func<T, object>>> include)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (include != null)
+            {
+                foreach (Expression<Func<T, object>> expr in include)
+                {
+                    query = query.Include(expr);
+                }
+            }
+            query = query.Where(predicate);
+
+            if (orderByPredicate != null)
+            {
+                query = query.OrderBy(orderByPredicate);
+            }
+
+            return await query
+                .ToListAsync() ?? new List<T>();
+        }
+
+        public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, Func<IQueryable<T>, IQueryable<T>> configureIncludes)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (configureIncludes != null)
+            {
+                query = configureIncludes(query);
+            }
+            
+            query = query.Where(predicate);
+
+            if (orderByPredicate != null)
+            {
+                query = query.OrderBy(orderByPredicate);
+            }
+
+            return await query.ToListAsync() ?? new List<T>();
+        }
+
+        public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<string> include)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (include != null)
+            {
+                foreach (string expr in include)
+                {
+                    query = query.Include(expr);
+                }
+            }
+            query = query.Where(predicate);
+
+            if (orderByPredicate != null)
+            {
+                query = query.OrderBy(orderByPredicate);
+            }
+
+            return await query
+                .ToListAsync() ?? new List<T>();
+        }
+
         public virtual async Task<EntityEntry<T>> InsertAsync(T entity)
         {
             if (IsEntityDefaultValue(entity))

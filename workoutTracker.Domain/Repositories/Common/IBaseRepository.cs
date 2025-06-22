@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace workoutTracker.Domain.Repositories.Common
         Task<T> SingleAsync(Expression<Func<T, bool>> predicate);
         Task<T> SingleByIdAsync(TId id);
         Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate = null);
+        Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<Expression<Func<T, object>>> include);
+        Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, Func<IQueryable<T>, IQueryable<T>> configureIncludes);
+        Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<string> include);
         Task<EntityEntry<T>> InsertAsync(T entity);
     }
 }

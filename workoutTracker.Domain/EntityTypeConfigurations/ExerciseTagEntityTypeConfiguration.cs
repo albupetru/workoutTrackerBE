@@ -65,14 +65,26 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
                     Name = exercise.Name,
                 };
                 var finalTagIds = new List<Guid>(exercise.TagIds.Value);
+                
                 foreach (var tagId in exercise.TagIds.Value)
                 {
-                    var parentId = TagDataSeed.GetTagParent(tagId);
-                    if (parentId.HasValue)
+                    // Get all ancestors recursively
+                    var currentTagId = tagId;
+                    while (true)
                     {
-                        finalTagIds.Add(parentId.Value);
+                        var parentId = TagDataSeed.GetTagParent(currentTagId);
+                        if (parentId.HasValue)
+                        {
+                            finalTagIds.Add(parentId.Value);
+                            currentTagId = parentId.Value;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
+                
                 newExercise.TagIds = new Lazy<List<Guid>>(finalTagIds.Distinct().ToList());
                 newData.Add(newExercise);
             }
