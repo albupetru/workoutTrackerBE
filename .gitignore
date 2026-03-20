@@ -398,3 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 /workoutTrackerAPI/appsettings.Development.json
 *.db
+workoutTrackerAPI/WorkoutTrackerDatabase.db-wal
+workoutTrackerAPI/WorkoutTrackerDatabase.db-shm

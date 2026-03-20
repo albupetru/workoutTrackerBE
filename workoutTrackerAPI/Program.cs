@@ -62,14 +62,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // Just keep the Bearer authentication
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header. Enter 'Bearer {token}' (get token from your app login)",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            AuthorizationCode = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri("https://accounts.google.com/o/oauth2/v2/auth"),
+                TokenUrl = new Uri("/swagger/token", UriKind.Relative),
+                Scopes = new Dictionary<string, string>
+                {
+                    { "openid", "OpenID" },
+                    { "email", "Email" },
+                    { "profile", "Profile" }
+                }
+            }
+        }
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -80,10 +89,10 @@ builder.Services.AddSwaggerGen(options =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = "oauth2"
                 }
             },
-            Array.Empty<string>()
+            new[] { "openid", "email", "profile" }
         }
     });
 });
@@ -97,7 +106,12 @@ app.UseCors(corsPolicyName);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.OAuthClientId(googleSecrets.ClientId);
+        options.OAuthScopes("openid", "email", "profile");
+        options.OAuthUsePkce();
+    });
 }
 
 app.UseHttpsRedirection();

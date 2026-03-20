@@ -20,9 +20,15 @@ namespace workoutTracker.Domain.Services.Implementation
 
         public async Task<GoogleAccessTokenResponse> GetToken(string code)
         {
-            const string redirectUri = "http://localhost:5173";
+            return await GetToken(code, "http://localhost:5173");
+        }
+
+        public async Task<GoogleAccessTokenResponse> GetToken(string code, string redirectUri, string? codeVerifier = null)
+        {
             const string grantType = "authorization_code";
             var postData = $"code={code}&client_id={_googleSecrets.ClientId}&client_secret={_googleSecrets.ClientSecret}&redirect_uri={redirectUri}&grant_type={grantType}";
+            if (!string.IsNullOrEmpty(codeVerifier))
+                postData += $"&code_verifier={codeVerifier}";
             var content = new StringContent(postData, Encoding.UTF8, "application/x-www-form-urlencoded");
 
             using var httpClient = new HttpClient();

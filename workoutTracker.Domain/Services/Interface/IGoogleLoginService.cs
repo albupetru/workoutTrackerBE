@@ -10,5 +10,6 @@ namespace workoutTracker.Domain.Services.Interface
     public interface IGoogleLoginService
     {
         Task<GoogleAccessTokenResponse> GetToken(string code);
+        Task<GoogleAccessTokenResponse> GetToken(string code, string redirectUri, string? codeVerifier = null);
     }
 }
