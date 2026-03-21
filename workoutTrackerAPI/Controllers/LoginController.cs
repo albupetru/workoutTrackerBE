@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
+using workoutTracker.Domain.Mappers;
 using workoutTracker.Domain.Models.Configuration;
 using workoutTracker.Domain.Repositories.Common;
 using workoutTracker.Domain.Services.Interface;
@@ -39,10 +40,15 @@ public class LoginController : ControllerBase
         try
         {
             var googleAccessTokenResponse = await _googleLoginService.GetToken(model.Code);
-            var token = await _unitOfWork.UserRepository.Login(googleAccessTokenResponse, _applicationSecrets.SecurityKey);
+            var (user, token) = await _unitOfWork.UserRepository.Login(googleAccessTokenResponse, _applicationSecrets.SecurityKey);
             await _unitOfWork.SaveAsync();
 
-            return Ok(token);
+            return Ok(new LoginResponseViewModel
+            {
+                Token = token,
+                User = UserMapper.ToViewModel(user),
+                ExpiresIn = 43200
+            });
         }
         catch (UnauthorizedAccessException)
         {

@@ -11,6 +11,6 @@ namespace workoutTracker.Domain.Repositories.Interface
 {
     public interface IUserRepository : IBaseRepository<User, Guid>
     {
-        Task<string> Login(GoogleAccessTokenResponse googleAccessTokenResponse, string secret);
+        Task<(User user, string token)> Login(GoogleAccessTokenResponse googleAccessTokenResponse, string secret);
     }
 }

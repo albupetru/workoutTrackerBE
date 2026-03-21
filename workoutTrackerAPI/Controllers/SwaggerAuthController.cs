@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using workoutTracker.Domain.Mappers;
 using workoutTracker.Domain.Models.Configuration;
 using workoutTracker.Domain.Repositories.Common;
 using workoutTracker.Domain.Services.Interface;
+using workoutTracker.Domain.ViewModels;
 
 namespace workoutTracker.WebAPI.Controllers;
 
@@ -51,14 +53,16 @@ public class SwaggerAuthController : ControllerBase
         try
         {
             var googleResponse = await _googleLoginService.GetToken(code, redirectUri, codeVerifier);
-            var jwt = await _unitOfWork.UserRepository.Login(googleResponse, _applicationSecrets.SecurityKey);
+            var (user, jwt) = await _unitOfWork.UserRepository.Login(googleResponse, _applicationSecrets.SecurityKey);
             await _unitOfWork.SaveAsync();
 
+            // Return in OAuth2 format for Swagger compatibility
             return Ok(new
             {
                 access_token = jwt,
                 token_type = "Bearer",
-                expires_in = 43200 // 12 hours, matching UserRepository.Login()
+                expires_in = 43200, // 12 hours
+                user = UserMapper.ToViewModel(user)
             });
         }
         catch (UnauthorizedAccessException)

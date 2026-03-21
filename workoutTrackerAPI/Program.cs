@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using workoutTracker.Domain.Extensions;
 using workoutTracker.Domain.Helpers;
 using workoutTracker.Domain.Models.Configuration;
@@ -50,7 +51,8 @@ builder.Services
                    ValidateIssuer = false,
                    ValidateAudience = false,
                    ValidateLifetime = true,
-                   ClockSkew = TimeSpan.FromMinutes(15)
+                   ClockSkew = TimeSpan.FromMinutes(15),
+                   RoleClaimType = ClaimTypes.Role // Tell ASP.NET where to find roles
                };
            options.RequireHttpsMetadata = false;
            options.SaveToken = true;
