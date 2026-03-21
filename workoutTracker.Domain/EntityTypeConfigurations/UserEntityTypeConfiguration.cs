@@ -11,9 +11,9 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
         {
             base.Configure(entityTypeBuilder);
 
-            //entityTypeBuilder
-            //    .HasMany(p => p.UserRoles)
-            //    .WithOne(b => b.User);
+            entityTypeBuilder
+                .HasMany(p => p.UserRoles)
+                .WithOne(b => b.User);
 
             var users = new List<object>();
             var dateTimeOffset = DateTimeOffset.Now;

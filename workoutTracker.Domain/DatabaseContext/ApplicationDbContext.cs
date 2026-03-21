@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using workoutTracker.Domain.DataSeeds;
 using workoutTracker.Domain.EntityTypeConfigurations;
 using workoutTracker.Domain.Extensions;
 using workoutTracker.Domain.Models.Application;
@@ -31,6 +32,9 @@ namespace workoutTracker.Domain.DatabaseContext
             modelBuilder.ExcludeSoftDeletedEntitiesGlobally();
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityTypeConfiguration).Assembly);
+
+            // Seed roles
+            modelBuilder.Entity<Role>().HasData(RoleDataSeed.Data);
         }
 
         public override int SaveChanges()
@@ -46,5 +50,7 @@ namespace workoutTracker.Domain.DatabaseContext
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 }

@@ -8,7 +8,9 @@ namespace workoutTracker.Domain.Common.Enums
 {
     public enum RoleType : int
     {
-        User = 0,
-        Admin = 1,
+        Trial = 0,
+        User = 1,
+        ContentModerator = 2,
+        Admin = 3,
     }
 }
