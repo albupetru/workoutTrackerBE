@@ -6,6 +6,7 @@ using workoutTracker.Domain.Mappers;
 using workoutTracker.Domain.Models.Application;
 using workoutTracker.Domain.Repositories.Common;
 using workoutTracker.Domain.ViewModels;
+using workoutTracker.WebAPI.Authorization.Requirements;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace workoutTracker.WebAPI.Controllers;
@@ -15,14 +16,18 @@ namespace workoutTracker.WebAPI.Controllers;
 [Authorize]
 [Route("[controller]")]
 [Produces("application/json")]
-public class ExerciseController
+public class ExerciseController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public ExerciseController(IUnitOfWork unitOfWork)
+    public ExerciseController(IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _unitOfWork = unitOfWork;
-    }    [HttpGet]
+        _authorizationService = authorizationService;
+    }  
+
+    [HttpGet]
     // [Route]
     public async Task<ActionResult<PaginatedEntityViewModel<ExerciseViewModel>>> Get([FromQuery] string? keyword = null)/*int take, int skip, [FromQuery] string keyword*/
     {
@@ -39,4 +44,38 @@ public class ExerciseController
         };
         return result;
     }
+
+    ///// <summary>
+    ///// Example PUT endpoint demonstrating resource-based authorization with custom requirement.
+    ///// This will be fully implemented when Exercise model includes IsVerified and SubmittedById properties.
+    ///// </summary>
+    //[HttpPut("{id}")]
+    //[Authorize(Policy = "RequireUserOrAbove")] // Must be at least User role
+    //public async Task<IActionResult> UpdateExercise(Guid id, [FromBody] ExerciseViewModel model)
+    //{
+    //    var exercise = await _unitOfWork.ExerciseRepository.GetByIdAsync(id);
+    //    if (exercise == null)
+    //    {
+    //        return NotFound();
+    //    }
+
+    //    // Check ownership with custom requirement
+    //    var authResult = await _authorizationService.AuthorizeAsync(
+    //        User,
+    //        exercise,
+    //        new ExerciseOwnershipRequirement()
+    //    );
+
+    //    if (!authResult.Succeeded)
+    //    {
+    //        return Forbid(); // 403 Forbidden
+    //    }
+
+    //    // TODO: Implement update logic when Exercise model is complete
+    //    // exercise.Name = model.Name;
+    //    // exercise.Description = model.Description;
+    //    // await _unitOfWork.SaveAsync();
+
+    //    return Ok(new { message = "Authorization successful. Update logic to be implemented." });
+    //}
 }

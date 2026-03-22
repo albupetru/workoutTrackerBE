@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,6 +10,8 @@ using workoutTracker.Domain.Models.Configuration;
 using workoutTracker.Domain.Repositories.Common;
 using workoutTracker.Domain.Services.Implementation;
 using workoutTracker.Domain.Services.Interface;
+using workoutTracker.WebAPI.Authorization.Handlers;
+using workoutTracker.Domain.Common.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +60,32 @@ builder.Services
            options.RequireHttpsMetadata = false;
            options.SaveToken = true;
        });
+
+// Setup authorization policies.
+builder.Services.AddAuthorization(options =>
+{
+    // Policy: Admin only
+    options.AddPolicy("RequireAdmin", policy =>
+        policy.RequireRole(RoleType.Admin.ToString()));
+    
+    // Policy: Moderator or Admin
+    options.AddPolicy("RequireModeratorOrAbove", policy =>
+        policy.RequireRole(
+            RoleType.Admin.ToString(),
+            RoleType.ContentModerator.ToString()
+        ));
+    
+    // Policy: Full user access (not trial)
+    options.AddPolicy("RequireUserOrAbove", policy =>
+        policy.RequireRole(
+            RoleType.Admin.ToString(),
+            RoleType.ContentModerator.ToString(),
+            RoleType.User.ToString()
+        ));
+});
+
+// Register custom authorization handlers
+builder.Services.AddSingleton<IAuthorizationHandler, ExerciseOwnershipAuthorizationHandler>();
 
 builder.Services.AddControllers();
 

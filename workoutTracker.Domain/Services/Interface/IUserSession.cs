@@ -13,7 +13,6 @@ namespace workoutTracker.Domain.Services.Interface
         string Name { get; set; }
         List<string> Roles { get; set; }
         public string Email { get; set; }
-        bool IsAuthenticated { get; }
         bool IsAdmin();
         bool IsModerator();
         bool IsAtLeast(RoleType minimumRole);

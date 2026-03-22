@@ -103,7 +103,5 @@ namespace workoutTracker.Domain.Services.Implementation
                 _ => false
             };
         }
-
-        public bool IsAuthenticated => _httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
     }
 }
