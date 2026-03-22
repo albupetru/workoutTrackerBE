@@ -20,5 +20,6 @@ namespace workoutTracker.Domain.Repositories.Common
         Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, Func<IQueryable<T>, IQueryable<T>> configureIncludes);
         Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<string> include);
         Task<EntityEntry<T>> InsertAsync(T entity);
+        void Remove(T entity);
     }
 }

@@ -11,8 +11,8 @@ using workoutTracker.Domain.DatabaseContext;
 namespace workoutTracker.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260322092231_AddExerciseVerificationFields")]
-    partial class AddExerciseVerificationFields
+    [Migration("20260322103517_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,20 @@ namespace workoutTracker.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<Guid?>("DeletedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -33,6 +47,14 @@ namespace workoutTracker.Domain.Migrations
                     b.Property<string>("Instructions")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ModifiedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -56,29 +78,41 @@ namespace workoutTracker.Domain.Migrations
                         new
                         {
                             Id = new Guid("4a7b067b-549e-4e6a-9d57-5f6735e4f88f"),
+                            CreatedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Description = "",
                             Instructions = "",
+                            ModifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            ModifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Name = "Bench Press (Paused)",
                             VerifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
-                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 11, 22, 30, 701, DateTimeKind.Unspecified).AddTicks(7439), new TimeSpan(0, 2, 0, 0, 0))
+                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0))
                         },
                         new
                         {
                             Id = new Guid("6bdc7a80-8bfa-4b8e-bbe4-0b5597279071"),
+                            CreatedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Description = "",
                             Instructions = "",
+                            ModifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            ModifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Name = "Low Bar Squat",
                             VerifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
-                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 11, 22, 30, 701, DateTimeKind.Unspecified).AddTicks(7439), new TimeSpan(0, 2, 0, 0, 0))
+                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0))
                         },
                         new
                         {
                             Id = new Guid("7c9e6679-7425-40de-944b-e07fc1f90ae7"),
+                            CreatedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Description = "",
                             Instructions = "",
+                            ModifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
+                            ModifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0)),
                             Name = "Conventional Deadlift",
                             VerifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
-                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 11, 22, 30, 701, DateTimeKind.Unspecified).AddTicks(7439), new TimeSpan(0, 2, 0, 0, 0))
+                            VerifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 258, DateTimeKind.Unspecified).AddTicks(474), new TimeSpan(0, 2, 0, 0, 0))
                         });
                 });
 
@@ -602,11 +636,11 @@ namespace workoutTracker.Domain.Migrations
                         {
                             Id = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
                             CreatedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 11, 22, 30, 709, DateTimeKind.Unspecified).AddTicks(6729), new TimeSpan(0, 2, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 263, DateTimeKind.Unspecified).AddTicks(1471), new TimeSpan(0, 2, 0, 0, 0)),
                             Email = "",
                             GoogleId = "",
                             ModifiedById = new Guid("5b3e3f65-ef2f-4646-b4d0-5f3e312bdd5e"),
-                            ModifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 11, 22, 30, 709, DateTimeKind.Unspecified).AddTicks(6729), new TimeSpan(0, 2, 0, 0, 0)),
+                            ModifiedOn = new DateTimeOffset(new DateTime(2026, 3, 22, 12, 35, 17, 263, DateTimeKind.Unspecified).AddTicks(1471), new TimeSpan(0, 2, 0, 0, 0)),
                             Name = "Automatic Process"
                         });
                 });

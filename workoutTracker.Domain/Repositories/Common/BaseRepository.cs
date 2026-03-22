@@ -126,6 +126,14 @@ namespace workoutTracker.Domain.Repositories.Common
             return entity;
         }
 
+        public virtual void Remove(T entity)
+        {
+            if (IsEntityDefaultValue(entity))
+                throw new ArgumentNullException(nameof(entity));
+
+            _dbContext.Set<T>().Remove(entity);
+        }
+
         protected bool IsEntityDefaultValue(T entity)
         {
             return EqualityComparer<T>.Default.Equals(entity, default(T));

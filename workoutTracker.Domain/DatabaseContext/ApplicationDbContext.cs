@@ -28,10 +28,12 @@ namespace workoutTracker.Domain.DatabaseContext
         {
             base.OnModelCreating(modelBuilder);
 
+            // Apply configurations first so EF discovers all entity types
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityTypeConfiguration).Assembly);
+
+            // Then apply shadow properties and global filters to discovered entities
             modelBuilder.ConfigureShadowProperties();
             modelBuilder.ExcludeSoftDeletedEntitiesGlobally();
-
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityTypeConfiguration).Assembly);
 
             // Seed roles
             modelBuilder.Entity<Role>().HasData(RoleDataSeed.Data);

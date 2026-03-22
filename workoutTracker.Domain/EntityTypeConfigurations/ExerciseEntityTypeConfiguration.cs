@@ -22,14 +22,12 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
                 .HasMany(p => p.ExerciseTags)
                 .WithOne(b => b.Exercise);
 
-            // Configure VerifiedBy relationship
             entityTypeBuilder
                 .HasOne(e => e.VerifiedBy)
                 .WithMany()
                 .HasForeignKey(e => e.VerifiedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Add indexes for filtering verified/unverified exercises
             entityTypeBuilder
                 .HasIndex(e => e.VerifiedOn);
 

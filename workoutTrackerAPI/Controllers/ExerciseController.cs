@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using workoutTracker.Domain.Mappers;
 using workoutTracker.Domain.Models.Application;
 using workoutTracker.Domain.Repositories.Common;
+using workoutTracker.Domain.Services.Interface;
 using workoutTracker.Domain.ViewModels;
 using workoutTracker.WebAPI.Authorization.Requirements;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
@@ -20,62 +21,214 @@ public class ExerciseController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAuthorizationService _authorizationService;
+    private readonly IUserSession _userSession;
 
-    public ExerciseController(IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
+    public ExerciseController(
+        IUnitOfWork unitOfWork,
+        IAuthorizationService authorizationService,
+        IUserSession userSession)
     {
         _unitOfWork = unitOfWork;
         _authorizationService = authorizationService;
-    }  
-
-    [HttpGet]
-    // [Route]
-    public async Task<ActionResult<PaginatedEntityViewModel<ExerciseViewModel>>> Get([FromQuery] string? keyword = null)/*int take, int skip, [FromQuery] string keyword*/
-    {
-        var mapper = new ExerciseMapper();
-        var exercises = await _unitOfWork.ExerciseRepository
-            .SelectAsync(x => string.IsNullOrEmpty(keyword) || x.Name.StartsWith(keyword),
-            x => x.Name,
-            query => query.Include(x => x.ExerciseTags).ThenInclude(x => x.Tag));
-
-        var result = new PaginatedEntityViewModel<ExerciseViewModel>
-        {
-            Results = mapper.ToExerciseViewModelList(exercises),
-            Total = exercises.Count
-        };
-        return result;
+        _userSession = userSession;
     }
 
-    ///// <summary>
-    ///// Example PUT endpoint demonstrating resource-based authorization with custom requirement.
-    ///// This will be fully implemented when Exercise model includes IsVerified and SubmittedById properties.
-    ///// </summary>
-    //[HttpPut("{id}")]
-    //[Authorize(Policy = "RequireUserOrAbove")] // Must be at least User role
-    //public async Task<IActionResult> UpdateExercise(Guid id, [FromBody] ExerciseViewModel model)
-    //{
-    //    var exercise = await _unitOfWork.ExerciseRepository.GetByIdAsync(id);
-    //    if (exercise == null)
-    //    {
-    //        return NotFound();
-    //    }
+    /// <summary>
+    /// List exercises with filtering, pagination, and sorting
+    /// </summary>
+    [HttpGet]
+    public async Task<ActionResult<object>> GetExercises(
+        [FromQuery] string? keyword = null,
+        [FromQuery] List<Guid>? tagIds = null,
+        [FromQuery] bool includeUnverified = false,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 20,
+        [FromQuery] string sortBy = "Name",
+        [FromQuery] string sortOrder = "asc")
+    {
+        var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
+        
+        var (exercises, totalCount) = await _unitOfWork.ExerciseRepository.GetExercisesAsync(
+            keyword,
+            tagIds,
+            includeUnverified,
+            _userSession.UserId,
+            isAdminOrModerator,
+            pageNumber,
+            pageSize,
+            sortBy,
+            sortOrder);
 
-    //    // Check ownership with custom requirement
-    //    var authResult = await _authorizationService.AuthorizeAsync(
-    //        User,
-    //        exercise,
-    //        new ExerciseOwnershipRequirement()
-    //    );
+        var mapper = new ExerciseMapper();
+        var exerciseViewModels = mapper.ToExerciseViewModelList(exercises);
 
-    //    if (!authResult.Succeeded)
-    //    {
-    //        return Forbid(); // 403 Forbidden
-    //    }
+        return Ok(new
+        {
+            exercises = exerciseViewModels,
+            totalCount,
+            pageNumber,
+            pageSize
+        });
+    }
 
-    //    // TODO: Implement update logic when Exercise model is complete
-    //    // exercise.Name = model.Name;
-    //    // exercise.Description = model.Description;
-    //    // await _unitOfWork.SaveAsync();
+    /// <summary>
+    /// Get single exercise by ID
+    /// </summary>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ExerciseViewModel>> GetExercise(Guid id)
+    {
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
 
-    //    return Ok(new { message = "Authorization successful. Update logic to be implemented." });
-    //}
+        if (exercise == null)
+        {
+            return NotFound();
+        }
+
+        var canView = exercise.VerifiedOn != null ||
+                      EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId ||
+                      _userSession.IsAdmin() || _userSession.IsModerator();
+
+        if (!canView)
+        {
+            return Forbid();
+        }
+
+        var mapper = new ExerciseMapper();
+        var exerciseViewModel = mapper.ToExerciseViewModel(exercise);
+
+        return Ok(exerciseViewModel);
+    }
+
+    /// <summary>
+    /// Create a new exercise
+    /// </summary>
+    [HttpPost]
+    public async Task<ActionResult<ExerciseViewModel>> CreateExercise([FromBody] CreateExerciseViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var mapper = new ExerciseMapper();
+        var exercise = mapper.ToExerciseEntity(model);
+
+        var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
+        if (isAdminOrModerator)
+        {
+            exercise.VerifiedById = _userSession.UserId;
+            exercise.VerifiedOn = DateTimeOffset.UtcNow;
+        }
+
+        await _unitOfWork.ExerciseRepository.InsertAsync(exercise);
+        await _unitOfWork.SaveAsync();
+
+        var createdExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(exercise.Id);
+        var exerciseViewModel = mapper.ToExerciseViewModel(createdExercise!);
+
+        return CreatedAtAction(nameof(GetExercise), new { id = exercise.Id }, exerciseViewModel);
+    }
+
+    /// <summary>
+    /// Update an existing exercise
+    /// </summary>
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ExerciseViewModel>> UpdateExercise(Guid id, [FromBody] UpdateExerciseViewModel model)
+    {
+        if (id != model.Id)
+        {
+            return BadRequest("ID mismatch");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+
+        if (exercise == null)
+        {
+            return NotFound();
+        }
+
+        var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
+        var isSubmitter = EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId;
+        var isUnverified = exercise.VerifiedOn == null;
+
+        var canEdit = (isSubmitter && isUnverified) || isAdminOrModerator;
+
+        if (!canEdit)
+        {
+            return Forbid();
+        }
+
+        var mapper = new ExerciseMapper();
+        mapper.UpdateExerciseFromViewModel(model, exercise);
+
+        // Note: We keep verification status as is (don't reset on edit)
+        await _unitOfWork.SaveAsync();
+
+        var updatedExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+        var exerciseViewModel = mapper.ToExerciseViewModel(updatedExercise!);
+
+        return Ok(exerciseViewModel);
+    }
+
+    /// <summary>
+    /// Delete an exercise (soft delete)
+    /// </summary>
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteExercise(Guid id)
+    {
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+
+        if (exercise == null)
+        {
+            return NotFound();
+        }
+
+        var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
+        var isSubmitter = EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId;
+        var isUnverified = exercise.VerifiedOn == null;
+
+        var canDelete = (isSubmitter && isUnverified) || isAdminOrModerator;
+
+        if (!canDelete)
+        {
+            return Forbid();
+        }
+
+        _unitOfWork.ExerciseRepository.Remove(exercise);
+        await _unitOfWork.SaveAsync();
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Verify an exercise (Admin/Moderator only)
+    /// </summary>
+    [HttpPatch("{id}/verify")]
+    [Authorize(Roles = "Admin,ContentModerator")]
+    public async Task<ActionResult<ExerciseViewModel>> VerifyExercise(Guid id)
+    {
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+
+        if (exercise == null)
+        {
+            return NotFound();
+        }
+
+        exercise.VerifiedById = _userSession.UserId;
+        exercise.VerifiedOn = DateTimeOffset.UtcNow;
+
+        await _unitOfWork.SaveAsync();
+
+        var verifiedExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+        var mapper = new ExerciseMapper();
+        var exerciseViewModel = mapper.ToExerciseViewModel(verifiedExercise!);
+
+        return Ok(exerciseViewModel);
+    }
 }
+

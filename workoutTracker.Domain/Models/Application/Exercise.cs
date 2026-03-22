@@ -14,6 +14,10 @@ namespace workoutTracker.Domain.Models.Application
         public string Description { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
 
+        public Guid CreatedById { get; set; }
+        public User CreatedBy { get; set; } = null!;
+        public DateTimeOffset CreatedOn { get; set; }
+        
         public Guid? VerifiedById { get; set; }
         public User? VerifiedBy { get; set; }
         public DateTimeOffset? VerifiedOn { get; set; }
@@ -24,6 +28,6 @@ namespace workoutTracker.Domain.Models.Application
         public virtual ICollection<Tag> Tags => ExerciseTags.Select(p => p.Tag).ToList();
 
         [NotMapped]
-        public Lazy<List<Guid>> TagIds { get; set; }
+        public Lazy<List<Guid>>? TagIds { get; set; }
     }
 }
