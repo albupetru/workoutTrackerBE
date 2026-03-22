@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,18 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
                 .HasMany(p => p.ExerciseTags)
                 .WithOne(b => b.Exercise);
 
+            // Configure VerifiedBy relationship
+            entityTypeBuilder
+                .HasOne(e => e.VerifiedBy)
+                .WithMany()
+                .HasForeignKey(e => e.VerifiedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Add indexes for filtering verified/unverified exercises
+            entityTypeBuilder
+                .HasIndex(e => e.VerifiedOn);
+
+
             if (!ExeciseDataSeed.ValidateDataSeed())
             {
                 throw new Exception("Invalid data seed for exercises.");
@@ -40,6 +53,8 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
                     CreatedOn = dateTimeOffset,
                     ModifiedById = Users.AutomaticProcess,
                     ModifiedOn = dateTimeOffset,
+                    VerifiedById = Users.AutomaticProcess,
+                    VerifiedOn = dateTimeOffset,
                 });
             }
 

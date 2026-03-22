@@ -14,6 +14,10 @@ namespace workoutTracker.Domain.Models.Application
         public string Description { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
 
+        public Guid? VerifiedById { get; set; }
+        public User? VerifiedBy { get; set; }
+        public DateTimeOffset? VerifiedOn { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<ExerciseTag> ExerciseTags { get; set; } = new List<ExerciseTag>();
         [NotMapped]
