@@ -85,7 +85,7 @@ public class ExerciseController : ControllerBase
         }
 
         var canView = exercise.VerifiedOn != null ||
-                      EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId ||
+                      exercise.CreatedById == _userSession.UserId ||
                       _userSession.IsAdmin() || _userSession.IsModerator();
 
         if (!canView)
@@ -189,7 +189,7 @@ public class ExerciseController : ControllerBase
         }
 
         var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
-        var isSubmitter = EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId;
+        var isSubmitter = exercise.CreatedById == _userSession.UserId;
         var isUnverified = exercise.VerifiedOn == null;
 
         var canDelete = (isSubmitter && isUnverified) || isAdminOrModerator;
