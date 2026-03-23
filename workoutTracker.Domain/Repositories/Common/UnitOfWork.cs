@@ -15,6 +15,7 @@ namespace workoutTracker.Domain.Repositories.Common
 
         private IUserRepository _userRepository;
         private IExerciseRepository _exerciseRepository;
+        private ITagRepository _tagRepository;
 
         public UnitOfWork(ApplicationDbContext dbContext)
         {
@@ -44,6 +45,14 @@ namespace workoutTracker.Domain.Repositories.Common
             get
             {
                 return _exerciseRepository ??= new ExerciseRepository(_dbContext);
+            }
+        }
+
+        public ITagRepository TagRepository
+        {
+            get
+            {
+                return _tagRepository ??= new TagRepository(_dbContext);
             }
         }
     }

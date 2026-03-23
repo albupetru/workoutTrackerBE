@@ -13,5 +13,6 @@ namespace workoutTracker.Domain.Repositories.Common
         Task<int> SaveAsync();
         IUserRepository UserRepository { get; }
         IExerciseRepository ExerciseRepository { get; }
+        ITagRepository TagRepository { get; }
     }   
 }
