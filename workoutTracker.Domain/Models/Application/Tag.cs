@@ -16,7 +16,7 @@ namespace workoutTracker.Domain.Models.Application
         [Key]
         public override Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        // public TagType Type { get; set; }
+        public TagType TagType { get; set; } = TagType.MuscleGroup;
 
         [JsonIgnore]
         public virtual ICollection<TagChild> TagChildren { get; set; } = new List<TagChild>();

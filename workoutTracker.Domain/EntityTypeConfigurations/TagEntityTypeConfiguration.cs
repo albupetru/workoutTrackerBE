@@ -31,6 +31,7 @@ namespace workoutTracker.Domain.EntityTypeConfigurations
                 {
                     tag.Id,
                     tag.Name,
+                    tag.TagType,
 
                     CreatedById = Users.AutomaticProcess,
                     CreatedOn = dateTimeOffset,

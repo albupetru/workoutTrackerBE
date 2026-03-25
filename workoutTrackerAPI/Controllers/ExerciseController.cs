@@ -153,7 +153,7 @@ public class ExerciseController : ControllerBase
         }
 
         var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
-        var isSubmitter = EF.Property<Guid>(exercise, "CreatedById") == _userSession.UserId;
+        var isSubmitter = exercise.CreatedById == _userSession.UserId;
         var isUnverified = exercise.VerifiedOn == null;
 
         var canEdit = (isSubmitter && isUnverified) || isAdminOrModerator;

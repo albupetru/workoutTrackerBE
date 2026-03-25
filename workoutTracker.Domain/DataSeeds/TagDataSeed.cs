@@ -1,4 +1,5 @@
 ﻿using workoutTracker.Domain.Common.Constants;
+using workoutTracker.Domain.Common.Enums;
 using workoutTracker.Domain.Models.Application;
 
 namespace workoutTracker.Domain.DataSeeds
@@ -7,11 +8,12 @@ namespace workoutTracker.Domain.DataSeeds
     {
         public static IList<Tag> Data = new List<Tag>()
         {
-            // Upper/Lower
+            // Body Zone
             new Tag()
             {
                 Id = Tags.BodyZone_LowerBody,
                 Name = "Lower Body",
+                TagType = TagType.BodyZone,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -24,6 +26,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.BodyZone_UpperBody,
                 Name = "Upper Body",
+                TagType = TagType.BodyZone,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -38,6 +41,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.BodyZone_Core,
                 Name = "Core",
+                TagType = TagType.BodyZone,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -51,6 +55,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Chest,
                 Name = "Chest",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -62,6 +67,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Shoulders,
                 Name = "Shoulders",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -76,6 +82,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_LowerBack,
                 Name = "Lower Back",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -87,6 +94,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_UpperArms,
                 Name = "Upper Arms",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -99,6 +107,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Forearms,
                 Name = "Forearms",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -111,6 +120,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Thighs,
                 Name = "Thighs",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -125,6 +135,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Abdominals,
                 Name = "Abdominals",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -137,6 +148,7 @@ namespace workoutTracker.Domain.DataSeeds
             {
                 Id = Tags.MuscleFamily_Calves,
                 Name = "Calves",
+                TagType = TagType.MuscleFamily,
                 ChildrenIds = new Lazy<List<Guid>>(() =>
                     new List<Guid>()
                     {
@@ -146,96 +158,24 @@ namespace workoutTracker.Domain.DataSeeds
                 )
             },
             // Muscle Group
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Pecs,
-                Name = "Pectorals",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_FrontDelts,
-                Name = "Front Delts",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_SideDelts,
-                Name = "Side Delts",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_RearDelts,
-                Name = "Rear Delts",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_SpinalErectors,
-                Name = "Spinal Erectors",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Biceps,
-                Name = "Biceps",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Triceps,
-                Name = "Triceps",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_ForearmExtensors,
-                Name = "Forearm Extensors",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_ForearmFlexors,
-                Name = "Forearm Flexors",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Quads,
-                Name = "Quadriceps",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Hamstrings,
-                Name = "Hamstrings",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Glutes,
-                Name = "Glutes",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Adductors,
-                Name = "Adductors",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Abs,
-                Name = "Rectus Abdominis",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Obliques,
-                Name = "Obliques",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_CalvesSoleus,
-                Name = "Calves Soleus",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_CalvesGastroc,
-                Name = "Calves Gastroc",
-            },
-            new Tag()
-            {
-                Id = Tags.MuscleGroup_Lats,
-                Name = "Lats",
-            }
+            new Tag() { Id = Tags.MuscleGroup_Pecs, Name = "Pectorals", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_FrontDelts, Name = "Front Delts", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_SideDelts, Name = "Side Delts", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_RearDelts, Name = "Rear Delts", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_SpinalErectors, Name = "Spinal Erectors", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Biceps, Name = "Biceps", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Triceps, Name = "Triceps", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_ForearmExtensors, Name = "Forearm Extensors", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_ForearmFlexors, Name = "Forearm Flexors", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Quads, Name = "Quadriceps", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Hamstrings, Name = "Hamstrings", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Glutes, Name = "Glutes", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Adductors, Name = "Adductors", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Abs, Name = "Rectus Abdominis", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Obliques, Name = "Obliques", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_CalvesSoleus, Name = "Calves Soleus", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_CalvesGastroc, Name = "Calves Gastroc", TagType = TagType.MuscleGroup },
+            new Tag() { Id = Tags.MuscleGroup_Lats, Name = "Lats", TagType = TagType.MuscleGroup }
         };
 
         public static Guid? GetTagParent(Guid id)
