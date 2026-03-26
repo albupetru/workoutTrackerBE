@@ -10,5 +10,7 @@ namespace workoutTracker.Domain.ViewModels
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string TagType { get; set; }
+        public Guid? ParentId { get; set; }
     }
 }

@@ -175,7 +175,69 @@ namespace workoutTracker.Domain.DataSeeds
             new Tag() { Id = Tags.MuscleGroup_Obliques, Name = "Obliques", TagType = TagType.MuscleGroup },
             new Tag() { Id = Tags.MuscleGroup_CalvesSoleus, Name = "Calves Soleus", TagType = TagType.MuscleGroup },
             new Tag() { Id = Tags.MuscleGroup_CalvesGastroc, Name = "Calves Gastroc", TagType = TagType.MuscleGroup },
-            new Tag() { Id = Tags.MuscleGroup_Lats, Name = "Lats", TagType = TagType.MuscleGroup }
+            new Tag() { Id = Tags.MuscleGroup_Lats, Name = "Lats", TagType = TagType.MuscleGroup },
+
+            // Equipment
+            new Tag() { Id = Tags.Equipment_Barbell, Name = "Barbell", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_Dumbbell, Name = "Dumbbell", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_Cable, Name = "Cable Machine", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_SmithMachine, Name = "Smith Machine", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_Machine, Name = "Machine", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_Bodyweight, Name = "Bodyweight", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_ResistanceBand, Name = "Resistance Band", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_Kettlebell, Name = "Kettlebell", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_EZBar, Name = "EZ Bar", TagType = TagType.Equipment },
+            new Tag() { Id = Tags.Equipment_TrapBar, Name = "Trap Bar", TagType = TagType.Equipment },
+
+            // Muscle Activation Pattern
+            new Tag() { Id = Tags.MuscleActivationPattern_Compound, Name = "Compound", TagType = TagType.MuscleActivationPattern },
+            new Tag() { Id = Tags.MuscleActivationPattern_Isolation, Name = "Isolation", TagType = TagType.MuscleActivationPattern },
+
+            // Laterality
+            new Tag() { Id = Tags.Laterality_Unilateral, Name = "Unilateral", TagType = TagType.Laterality },
+            new Tag() { Id = Tags.Laterality_Bilateral, Name = "Bilateral", TagType = TagType.Laterality },
+
+            // Discipline
+            new Tag() { Id = Tags.Discipline_Powerlifting, Name = "Powerlifting", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Bodybuilding, Name = "Bodybuilding", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Crossfit, Name = "CrossFit", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Endurance, Name = "Endurance", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Strongman, Name = "Strongman", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Weightlifting, Name = "Olympic Weightlifting", TagType = TagType.Discipline },
+            new Tag() { Id = Tags.Discipline_Calisthenics, Name = "Calisthenics", TagType = TagType.Discipline },
+
+            // Training Split
+            new Tag() { Id = Tags.TrainingSplit_Push, Name = "Push", TagType = TagType.TrainingSplit },
+            new Tag() { Id = Tags.TrainingSplit_Pull, Name = "Pull", TagType = TagType.TrainingSplit },
+            new Tag() { Id = Tags.TrainingSplit_Legs, Name = "Legs", TagType = TagType.TrainingSplit },
+            new Tag() { Id = Tags.TrainingSplit_Upper, Name = "Upper", TagType = TagType.TrainingSplit },
+            new Tag() { Id = Tags.TrainingSplit_Lower, Name = "Lower", TagType = TagType.TrainingSplit },
+            new Tag() { Id = Tags.TrainingSplit_FullBody, Name = "Full Body", TagType = TagType.TrainingSplit },
+
+            // Comfort
+            new Tag() { Id = Tags.Comfort_LowBackFriendly, Name = "Low Back Friendly", TagType = TagType.Comfort },
+            new Tag() { Id = Tags.Comfort_KneeFriendly, Name = "Knee Friendly", TagType = TagType.Comfort },
+            new Tag() { Id = Tags.Comfort_ShoulderFriendly, Name = "Shoulder Friendly", TagType = TagType.Comfort },
+            new Tag() { Id = Tags.Comfort_WristFriendly, Name = "Wrist Friendly", TagType = TagType.Comfort },
+
+            // Exercise Type
+            new Tag() { Id = Tags.ExerciseType_Strength, Name = "Strength", TagType = TagType.ExerciseType },
+            new Tag() { Id = Tags.ExerciseType_Stretching, Name = "Stretching", TagType = TagType.ExerciseType },
+            new Tag() { Id = Tags.ExerciseType_Cardio, Name = "Cardio", TagType = TagType.ExerciseType },
+            new Tag() { Id = Tags.ExerciseType_Mobility, Name = "Mobility", TagType = TagType.ExerciseType },
+            new Tag() { Id = Tags.ExerciseType_Warmup, Name = "Warmup", TagType = TagType.ExerciseType },
+            new Tag() { Id = Tags.ExerciseType_Cooldown, Name = "Cooldown", TagType = TagType.ExerciseType },
+
+            // Movement Pattern
+            new Tag() { Id = Tags.MovementPattern_Pull_Vertical, Name = "Vertical Pull", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_Pull_Horizontal, Name = "Horizontal Pull", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_Push_Vertical, Name = "Vertical Push", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_Push_Horizontal, Name = "Horizontal Push", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_HipHingePattern, Name = "Hip Hinge", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_SquatPattern, Name = "Squat Pattern", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_LungePattern, Name = "Lunge Pattern", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_Carry, Name = "Carry", TagType = TagType.MovementPattern },
+            new Tag() { Id = Tags.MovementPattern_Rotation, Name = "Rotation", TagType = TagType.MovementPattern },
         };
 
         public static Guid? GetTagParent(Guid id)

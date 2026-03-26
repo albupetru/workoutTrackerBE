@@ -7,6 +7,7 @@ using System.Security.Claims;
 using workoutTracker.Domain.Extensions;
 using workoutTracker.Domain.Helpers;
 using workoutTracker.Domain.Models.Configuration;
+using workoutTracker.Domain.Mappers;
 using workoutTracker.Domain.Repositories.Common;
 using workoutTracker.Domain.Services.Implementation;
 using workoutTracker.Domain.Services.Interface;
@@ -18,6 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IUserSession, UserSession>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Register all mapper classes from the Domain assembly by convention.
+foreach (var mapperType in typeof(ExerciseMapper).Assembly.GetTypes()
+    .Where(t => t.Namespace == typeof(ExerciseMapper).Namespace && !t.IsAbstract && t.Name.EndsWith("Mapper")))
+{
+    builder.Services.AddSingleton(mapperType);
+}
 
 // TODO: consider moving some of the code to separate methods in a class for startupextensions/services configuration
 // when this gets too large

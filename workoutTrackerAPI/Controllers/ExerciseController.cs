@@ -22,15 +22,18 @@ public class ExerciseController : ControllerBase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAuthorizationService _authorizationService;
     private readonly IUserSession _userSession;
+    private readonly ExerciseMapper _mapper;
 
     public ExerciseController(
         IUnitOfWork unitOfWork,
         IAuthorizationService authorizationService,
-        IUserSession userSession)
+        IUserSession userSession,
+        ExerciseMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _authorizationService = authorizationService;
         _userSession = userSession;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -59,8 +62,7 @@ public class ExerciseController : ControllerBase
             sortBy,
             sortOrder);
 
-        var mapper = new ExerciseMapper();
-        var exerciseViewModels = mapper.ToExerciseViewModelList(exercises);
+        var exerciseViewModels = _mapper.ToExerciseViewModelList(exercises);
 
         return Ok(new
         {
@@ -93,8 +95,7 @@ public class ExerciseController : ControllerBase
             return Forbid();
         }
 
-        var mapper = new ExerciseMapper();
-        var exerciseViewModel = mapper.ToExerciseViewModel(exercise);
+        var exerciseViewModel = _mapper.ToExerciseViewModel(exercise);
 
         return Ok(exerciseViewModel);
     }
@@ -110,8 +111,7 @@ public class ExerciseController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var mapper = new ExerciseMapper();
-        var exercise = mapper.ToExerciseEntity(model);
+        var exercise = _mapper.ToExerciseEntity(model);
 
         var isAdminOrModerator = _userSession.IsAdmin() || _userSession.IsModerator();
         if (isAdminOrModerator)
@@ -124,7 +124,7 @@ public class ExerciseController : ControllerBase
         await _unitOfWork.SaveAsync();
 
         var createdExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(exercise.Id);
-        var exerciseViewModel = mapper.ToExerciseViewModel(createdExercise!);
+        var exerciseViewModel = _mapper.ToExerciseViewModel(createdExercise!);
 
         return CreatedAtAction(nameof(GetExercise), new { id = exercise.Id }, exerciseViewModel);
     }
@@ -163,14 +163,13 @@ public class ExerciseController : ControllerBase
             return Forbid();
         }
 
-        var mapper = new ExerciseMapper();
-        mapper.UpdateExerciseFromViewModel(model, exercise);
+        _mapper.UpdateExerciseFromViewModel(model, exercise);
 
         // Note: We keep verification status as is (don't reset on edit)
         await _unitOfWork.SaveAsync();
 
         var updatedExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
-        var exerciseViewModel = mapper.ToExerciseViewModel(updatedExercise!);
+        var exerciseViewModel = _mapper.ToExerciseViewModel(updatedExercise!);
 
         return Ok(exerciseViewModel);
     }
@@ -225,8 +224,7 @@ public class ExerciseController : ControllerBase
         await _unitOfWork.SaveAsync();
 
         var verifiedExercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
-        var mapper = new ExerciseMapper();
-        var exerciseViewModel = mapper.ToExerciseViewModel(verifiedExercise!);
+        var exerciseViewModel = _mapper.ToExerciseViewModel(verifiedExercise!);
 
         return Ok(exerciseViewModel);
     }

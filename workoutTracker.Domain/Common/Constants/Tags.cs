@@ -113,6 +113,46 @@ namespace workoutTracker.Domain.Common.Constants
         public static readonly Guid Equipment_Kettlebell = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3304");
         public static readonly Guid Equipment_Machine = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3305");
         public static readonly Guid Equipment_NoEquipment = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3306");
+        public static readonly Guid Equipment_SmithMachine = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3307");
+        public static readonly Guid Equipment_Bodyweight = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3308");
+        public static readonly Guid Equipment_ResistanceBand = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3309");
+        public static readonly Guid Equipment_EZBar = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3310");
+        public static readonly Guid Equipment_TrapBar = Guid.Parse("4f2504e0-4f89-11d3-9a0c-0305e82c3311");
+
+        // Laterality
+        public static readonly Guid Laterality_Unilateral = Guid.Parse("5f2504e0-4f89-11d3-9a0c-0305e82c3301");
+        public static readonly Guid Laterality_Bilateral = Guid.Parse("5f2504e0-4f89-11d3-9a0c-0305e82c3302");
+
+        // Training Split
+        public static readonly Guid TrainingSplit_Push = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3301");
+        public static readonly Guid TrainingSplit_Pull = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3302");
+        public static readonly Guid TrainingSplit_Legs = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3303");
+        public static readonly Guid TrainingSplit_Upper = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3304");
+        public static readonly Guid TrainingSplit_Lower = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3305");
+        public static readonly Guid TrainingSplit_FullBody = Guid.Parse("6f2504e0-4f89-11d3-9a0c-0305e82c3306");
+
+        // Comfort
+        public static readonly Guid Comfort_LowBackFriendly = Guid.Parse("7f2504e0-4f89-11d3-9a0c-0305e82c3301");
+        public static readonly Guid Comfort_KneeFriendly = Guid.Parse("7f2504e0-4f89-11d3-9a0c-0305e82c3302");
+        public static readonly Guid Comfort_ShoulderFriendly = Guid.Parse("7f2504e0-4f89-11d3-9a0c-0305e82c3303");
+        public static readonly Guid Comfort_WristFriendly = Guid.Parse("7f2504e0-4f89-11d3-9a0c-0305e82c3304");
+
+        // Exercise Type
+        public static readonly Guid ExerciseType_Strength = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3301");
+        public static readonly Guid ExerciseType_Stretching = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3302");
+        public static readonly Guid ExerciseType_Cardio = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3303");
+        public static readonly Guid ExerciseType_Mobility = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3304");
+        public static readonly Guid ExerciseType_Warmup = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3305");
+        public static readonly Guid ExerciseType_Cooldown = Guid.Parse("8f2504e0-4f89-11d3-9a0c-0305e82c3306");
+
+        // Discipline (additional)
+        public static readonly Guid Discipline_Endurance = Guid.Parse("6b3e3f65-ef2f-4646-b4d0-5f3e312bdd63");
+        public static readonly Guid Discipline_Calisthenics = Guid.Parse("6b3e3f65-ef2f-4646-b4d0-5f3e312bdd64");
+
+        // Movement Pattern (additional)
+        public static readonly Guid MovementPattern_LungePattern = Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3330");
+        public static readonly Guid MovementPattern_Carry = Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3331");
+        public static readonly Guid MovementPattern_Rotation = Guid.Parse("3f2504e0-4f89-11d3-9a0c-0305e82c3332");
 
 
     }

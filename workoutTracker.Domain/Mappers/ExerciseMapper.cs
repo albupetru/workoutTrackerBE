@@ -35,7 +35,9 @@ public class ExerciseMapper
             Tags = exercise.Tags.Select(t => new TagViewModel
             {
                 Id = t.Id,
-                Name = t.Name
+                Name = t.Name,
+                TagType = t.TagType.ToString(),
+                ParentId = t.TagParent?.ParentId
             }).ToList()
         };
     }
