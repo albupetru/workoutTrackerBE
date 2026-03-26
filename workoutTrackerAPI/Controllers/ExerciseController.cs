@@ -145,7 +145,7 @@ public class ExerciseController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id, tracking: true);
 
         if (exercise == null)
         {
@@ -211,7 +211,7 @@ public class ExerciseController : ControllerBase
     [Authorize(Roles = "Admin,ContentModerator")]
     public async Task<ActionResult<ExerciseViewModel>> VerifyExercise(Guid id)
     {
-        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id);
+        var exercise = await _unitOfWork.ExerciseRepository.GetByIdWithDetailsAsync(id, tracking: true);
 
         if (exercise == null)
         {

@@ -14,6 +14,7 @@ namespace workoutTracker.Domain.Repositories.Implementation
         public async Task<IList<Tag>> GetAllOrderedByNameAsync()
         {
             return await _dbContext.Set<Tag>()
+                .AsNoTracking()
                 .OrderBy(t => t.Name)
                 .ToListAsync();
         }
@@ -21,6 +22,7 @@ namespace workoutTracker.Domain.Repositories.Implementation
         public async Task<IList<Tag>> GetByTypeAsync(TagType type)
         {
             return await _dbContext.Set<Tag>()
+                .AsNoTracking()
                 .Where(t => t.TagType == type)
                 .OrderBy(t => t.Name)
                 .ToListAsync();
@@ -29,6 +31,7 @@ namespace workoutTracker.Domain.Repositories.Implementation
         public async Task<IList<Tag>> GetAllWithParentsAsync()
         {
             return await _dbContext.Set<Tag>()
+                .AsNoTracking()
                 .Include(t => t.TagParent)
                 .OrderBy(t => t.Name)
                 .ToListAsync();

@@ -26,6 +26,7 @@ namespace workoutTracker.Domain.Repositories.Implementation
             string sortOrder = "asc")
         {
             var query = _dbContext.Set<Exercise>()
+                .AsNoTracking()
                 .Include(e => e.ExerciseTags)
                     .ThenInclude(et => et.Tag)
                 .Include(e => e.VerifiedBy)
@@ -76,9 +77,16 @@ namespace workoutTracker.Domain.Repositories.Implementation
             return (exercises, totalCount);
         }
 
-        public async Task<Exercise?> GetByIdWithDetailsAsync(Guid id)
+        public async Task<Exercise?> GetByIdWithDetailsAsync(Guid id, bool tracking = false)
         {
-            return await _dbContext.Set<Exercise>()
+            IQueryable<Exercise> query = _dbContext.Set<Exercise>();
+
+            if (!tracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query
                 .Include(e => e.ExerciseTags)
                     .ThenInclude(et => et.Tag)
                 .Include(e => e.VerifiedBy)

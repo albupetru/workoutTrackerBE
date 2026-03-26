@@ -24,7 +24,7 @@ namespace workoutTracker.Domain.Repositories.Common
 
         public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate = null)
         {
-            var query = _dbContext.Set<T>();
+            var query = _dbContext.Set<T>().AsNoTracking();
             if (orderByPredicate != null)
             {
                 return await query
@@ -40,7 +40,7 @@ namespace workoutTracker.Domain.Repositories.Common
 
         public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<Expression<Func<T, object>>> include)
         {
-            IQueryable<T> query = _dbContext.Set<T>();
+            IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
 
             if (include != null)
             {
@@ -62,13 +62,13 @@ namespace workoutTracker.Domain.Repositories.Common
 
         public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, Func<IQueryable<T>, IQueryable<T>> configureIncludes)
         {
-            IQueryable<T> query = _dbContext.Set<T>();
+            IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
 
             if (configureIncludes != null)
             {
                 query = configureIncludes(query);
             }
-            
+
             query = query.Where(predicate);
 
             if (orderByPredicate != null)
@@ -81,7 +81,7 @@ namespace workoutTracker.Domain.Repositories.Common
 
         public virtual async Task<IList<T>> SelectAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, object>> orderByPredicate, List<string> include)
         {
-            IQueryable<T> query = _dbContext.Set<T>();
+            IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
 
             if (include != null)
             {
@@ -114,14 +114,14 @@ namespace workoutTracker.Domain.Repositories.Common
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            var entity = await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
+            var entity = await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(predicate);
 
             return entity;
         }
 
         public virtual async Task<T> SingleByIdAsync(TId id)
         {
-            var entity = await _dbContext.Set<T>().Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+            var entity = await _dbContext.Set<T>().AsNoTracking().Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
 
             return entity;
         }

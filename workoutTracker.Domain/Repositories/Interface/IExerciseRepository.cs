@@ -21,7 +21,7 @@ namespace workoutTracker.Domain.Repositories.Interface
             string sortBy = "Name",
             string sortOrder = "asc");
 
-        Task<Exercise?> GetByIdWithDetailsAsync(Guid id);
+        Task<Exercise?> GetByIdWithDetailsAsync(Guid id, bool tracking = false);
     }
 }
 

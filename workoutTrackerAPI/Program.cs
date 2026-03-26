@@ -24,7 +24,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 foreach (var mapperType in typeof(ExerciseMapper).Assembly.GetTypes()
     .Where(t => t.Namespace == typeof(ExerciseMapper).Namespace && !t.IsAbstract && t.Name.EndsWith("Mapper")))
 {
-    builder.Services.AddSingleton(mapperType);
+    builder.Services.AddTransient(mapperType);
 }
 
 // TODO: consider moving some of the code to separate methods in a class for startupextensions/services configuration
